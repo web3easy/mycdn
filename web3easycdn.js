@@ -1,4 +1,6 @@
 window.onload = function() {
+    console.log("window.supabase:", window.supabase);
+
     if (typeof window.supabase === "undefined" || !window.supabase.createClient) {
         console.error("Supabase не загружен");
         return;
@@ -10,6 +12,8 @@ window.onload = function() {
         return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     };
 
+    console.log("Supabase клиент инициализирован");
     // Вызов функции для проверки подписки
     checkSubscriptionStatus();
 };
+
