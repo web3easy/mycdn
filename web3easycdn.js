@@ -16,7 +16,7 @@ async function checkSubscriptionStatus() {
 
     const userId = localStorage.getItem("user_id");
     if (!userId) {
-        window.location.href = '/login'; // Редирект на страницу логина, если user_id отсутствует
+        window.location.href = '/buy-pro-plan'; // Редирект на страницу логина, если user_id отсутствует
         return;
     }
 
@@ -29,13 +29,13 @@ async function checkSubscriptionStatus() {
             .single();
 
         if (error || !subscription || subscription.status === "Expired") {
-            window.location.href = '/subscription'; // Редирект на страницу с предложением продлить подписку
+            window.location.href = '/buy-pro-plan'; // Редирект на страницу с предложением продлить подписку
         } else if (subscription.status === "Active") {
             console.log("Доступ разрешен");
         }
     } catch (error) {
         console.error("Ошибка при проверке подписки:", error);
-        window.location.href = '/error'; // Редирект в случае ошибки
+        window.location.href = '/404'; // Редирект в случае ошибки
     }
 }
 
