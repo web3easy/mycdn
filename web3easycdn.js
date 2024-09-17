@@ -13,6 +13,11 @@ const getSupabaseClient = () => {
 // Список защищённых страниц
 const protectedPages = ["/berachain"];
 
+// Скрыть содержимое страницы перед проверкой
+const hidePageContent = () => {
+    document.body.style.visibility = 'hidden';
+};
+
 // Функция для проверки подписки
 const checkSubscriptionStatus = async () => {
     const supabase = getSupabaseClient();
@@ -35,17 +40,12 @@ const checkSubscriptionStatus = async () => {
         if (error || !subscription || subscription.status !== "Active") {
             window.location.href = '/subscription'; // Редирект на страницу продления подписки
         } else {
-            document.body.style.display = 'block'; // Отображение страницы после успешной проверки
+            document.body.style.visibility = 'visible'; // Отображение страницы после успешной проверки
         }
     } catch (error) {
         console.error("Ошибка при проверке подписки:", error);
         window.location.href = '/error'; // Редирект в случае ошибки
     }
-};
-
-// Скрыть содержимое страницы перед проверкой
-const hidePageContent = () => {
-    document.body.style.display = 'none'; // Полное скрытие содержимого до проверки
 };
 
 // Проверка, находится ли пользователь на защищённой странице
@@ -56,8 +56,17 @@ const initPageCheck = () => {
     }
 };
 
-// Отслеживаем переходы между страницами для сайтов с динамической навигацией (SPA)
-window.addEventListener('popstate', initPageCheck);
+// Инициализация отслеживания изменения страницы через MutationObserver
+const observer = new MutationObserver(() => {
+    initPageCheck(); // Выполняем проверку при изменении страницы
+});
 
-// Инициализация проверки страницы
+// Начинаем отслеживание изменений
+observer.observe(document.body, {
+    childList: true, 
+    subtree: true, 
+    attributes: true
+});
+
+// Запускаем проверку при загрузке
 initPageCheck();
