@@ -1,16 +1,4 @@
-// URL защищенных страниц
-const protectedPages = ["https://mytestproject.space/berachain"];
-
-// Проверка, если это защищенная страница
-const isProtectedPage = protectedPages.includes(window.location.pathname);
-
-// Применяем стили для скрытия страницы только если она защищенная
-if (isProtectedPage) {
-    const style = document.createElement("style");
-    style.innerHTML = "body { visibility: hidden; }";
-    document.head.appendChild(style);
-}
-
+// Инициализация Supabase
 const getSupabaseClient = () => {
     if (typeof window !== "undefined" && window.supabase) {
         const SUPABASE_URL = "https://ghataqmohtpgkzlxagyd.supabase.co";
@@ -22,41 +10,54 @@ const getSupabaseClient = () => {
     return null;
 };
 
-// Функция для проверки статуса подписки
-async function checkSubscriptionStatus() {
-    // Если страница не защищена, просто показываем её
-    if (!isProtectedPage) {
-        document.body.style.visibility = "visible"; // Показываем содержимое
-        return;
-    }
+// Список защищённых страниц
+const protectedPages = ["/berachain"]; 
 
+// Функция для проверки подписки
+const checkSubscriptionStatus = async () => {
     const supabase = getSupabaseClient();
-    if (!supabase) return; // Прерываем выполнение, если Supabase не инициализирован
+    if (!supabase) return;
 
     const userId = localStorage.getItem("user_id");
     if (!userId) {
-        window.location.href = '/buy-pro-plan'; // Редирект на страницу подписки
+        window.location.href = '/buy-pro-plan'; // Редирект на страницу логина, если user_id отсутствует
         return;
     }
 
     try {
-        // Запрос к таблице user_subscriptions для проверки статуса
+        // Проверка подписки пользователя
         const { data: subscription, error } = await supabase
             .from("user_subscriptions")
             .select("status")
             .eq("user_id", userId)
             .single();
 
-        if (error || !subscription || subscription.status === "Expired") {
-            window.location.href = '/buy-pro-plan'; // Редирект на страницу подписки
-        } else if (subscription.status === "Active") {
-            document.body.style.visibility = "visible"; // Показываем страницу только после проверки
+        if (error || !subscription || subscription.status !== "Active") {
+            window.location.href = '/subscription'; // Редирект на страницу продления подписки
+        } else {
+            document.body.style.visibility = 'visible'; // Отображение страницы после успешной проверки
         }
     } catch (error) {
         console.error("Ошибка при проверке подписки:", error);
         window.location.href = '/404'; // Редирект в случае ошибки
     }
-}
+};
 
-// Вызов функции для проверки подписки
-checkSubscriptionStatus();
+// Скрыть содержимое страницы перед проверкой
+const hidePageContent = () => {
+    document.body.style.visibility = 'hidden';
+};
+
+// Проверка, находится ли пользователь на защищённой странице
+const initPageCheck = () => {
+    if (protectedPages.includes(window.location.pathname)) {
+        hidePageContent(); // Скрываем страницу
+        checkSubscriptionStatus(); // Проверяем подписку
+    }
+};
+
+// Отслеживаем переходы между страницами для сайтов с динамической навигацией (SPA)
+window.addEventListener('popstate', initPageCheck);
+
+// Инициализация проверки страницы
+initPageCheck();
