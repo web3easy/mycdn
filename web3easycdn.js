@@ -3,6 +3,9 @@ const style = document.createElement("style");
 style.innerHTML = "body { visibility: hidden; }";
 document.head.appendChild(style);
 
+// URL защищенных страниц
+const protectedPages = ["/protected-page", "/buy-pro-plan"];
+
 const getSupabaseClient = () => {
     if (typeof window !== "undefined" && window.supabase) {
         const SUPABASE_URL = "https://ghataqmohtpgkzlxagyd.supabase.co";
@@ -16,12 +19,19 @@ const getSupabaseClient = () => {
 
 // Функция для проверки статуса подписки
 async function checkSubscriptionStatus() {
+    // Проверка, если это защищенная страница
+    const isProtectedPage = protectedPages.includes(window.location.pathname);
+    if (!isProtectedPage) {
+        document.body.style.visibility = "visible"; // Показать содержимое, если страница не защищена
+        return;
+    }
+
     const supabase = getSupabaseClient();
     if (!supabase) return;
 
     const userId = localStorage.getItem("user_id");
     if (!userId) {
-        window.location.href = '/buy-pro-plan'; 
+        window.location.href = '/buy-pro-plan';
         return;
     }
 
@@ -33,15 +43,18 @@ async function checkSubscriptionStatus() {
             .single();
 
         if (error || !subscription || subscription.status === "Expired") {
-            window.location.href = '/buy-pro-plan'; 
+            window.location.href = '/buy-pro-plan';
         } else if (subscription.status === "Active") {
             document.body.style.visibility = "visible"; // Показываем содержимое после успешной проверки
         }
     } catch (error) {
         console.error("Ошибка при проверке подписки:", error);
-        window.location.href = '/404'; 
+        window.location.href = '/404';
     }
 }
 
 // Вызов функции для проверки подписки
 checkSubscriptionStatus();
+
+// Также отслеживаем изменения URL
+window.addEventListener("popstate", checkSubscriptionStatus);
