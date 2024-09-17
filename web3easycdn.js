@@ -1,5 +1,5 @@
 // URL защищенных страниц
-const protectedPages = ["/berachain"];
+const protectedPages = ["https://mytestproject.space/berachain"];
 
 // Проверка, если это защищенная страница
 const isProtectedPage = protectedPages.includes(window.location.pathname);
