@@ -1,10 +1,10 @@
 window.onload = function() {
     const getSupabaseClient = () => {
-        if (typeof window !== "undefined" && window.supabase && window.supabase.createClient) {
+        if (typeof window !== "undefined" && window.supabase && supabase.createClient) {
             const SUPABASE_URL = "https://ghataqmohtpgkzlxagyd.supabase.co";
             const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoYXRhcW1vaHRwZ2t6bHhhZ3lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjYwODU1OTAsImV4cCI6MjA0MTY2MTU5MH0.nbckSGmfcmh-nG9Fozny8HI0Z8UgP3xvC4-mxbNHb-M";
 
-            return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            return supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
         console.error("Supabase не загружен или createClient недоступен");
         return null;
