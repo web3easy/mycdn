@@ -4,7 +4,7 @@ style.innerHTML = "body { visibility: hidden; }";
 document.head.appendChild(style);
 
 // URL защищенных страниц
-const protectedPages = ["/protected-page", "/buy-pro-plan"];
+const protectedPages = ["/berachain"];
 
 const getSupabaseClient = () => {
     if (typeof window !== "undefined" && window.supabase) {
