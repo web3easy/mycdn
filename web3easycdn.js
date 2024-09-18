@@ -11,7 +11,7 @@ const getSupabaseClient = () => {
 };
 
 // Список защищённых страниц
-const protectedPages = ["/berachain"]; 
+const protectedPages = ["/berachain"];
 
 // HTML для колесика загрузки
 const loadingSpinnerHTML = `
@@ -108,10 +108,26 @@ const initPageCheck = () => {
 };
 
 // Отслеживание переходов между страницами для сайтов с динамической навигацией (SPA)
-window.addEventListener('popstate', initPageCheck);
+const monitorUrlChanges = () => {
+    const pushState = history.pushState;
+    const replaceState = history.replaceState;
 
-// Вызов проверки страницы при первой загрузке
-window.addEventListener('load', () => {
+    history.pushState = function () {
+        pushState.apply(history, arguments);
+        initPageCheck();
+    };
+
+    history.replaceState = function () {
+        replaceState.apply(history, arguments);
+        initPageCheck();
+    };
+
+    window.addEventListener('popstate', initPageCheck); // При нажатии "Назад" или "Вперед"
+};
+
+// Запуск проверки
+window.addEventListener('DOMContentLoaded', () => {
     addLoadingSpinnerToDOM(); // Добавить колесико на страницу
     initPageCheck(); // Инициализировать проверку страницы
+    monitorUrlChanges(); // Отслеживать изменение URL
 });
