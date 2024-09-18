@@ -16,7 +16,7 @@ const protectedPages = ["/berachain"];
 // Скрыть содержимое страницы перед проверкой
 const hidePageContent = () => {
     document.body.style.visibility = 'hidden';
-    document.body.style.backgroundColor = '#000'; // Черный фон
+    document.body.style.backgroundColor = '#000'; // Черный фон вместо белого
 };
 
 // Показать содержимое страницы после проверки
@@ -24,14 +24,14 @@ const showPageContent = () => {
     document.body.style.visibility = 'visible';
 };
 
-// Функция для проверки подписки с задержкой рендеринга
+// Функция для проверки подписки
 const checkSubscriptionStatus = async () => {
     const supabase = getSupabaseClient();
     if (!supabase) return;
 
     const userId = localStorage.getItem("user_id");
     if (!userId) {
-        window.location.href = '/login'; // Редирект на страницу логина
+        window.location.href = '/login'; // Редирект на страницу логина, если user_id отсутствует
         return;
     }
 
@@ -46,9 +46,7 @@ const checkSubscriptionStatus = async () => {
         if (error || !subscription || subscription.status !== "Active") {
             window.location.href = '/subscription'; // Редирект на страницу продления подписки
         } else {
-            setTimeout(() => { // Задержка отображения контента
-                showPageContent(); // Показать содержимое страницы после успешной проверки
-            }, 500); // Задержка в 500 мс для плавности
+            showPageContent(); // Показать содержимое страницы после успешной проверки
         }
     } catch (error) {
         console.error("Ошибка при проверке подписки:", error);
