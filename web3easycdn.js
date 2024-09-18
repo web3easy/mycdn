@@ -43,6 +43,7 @@ const addLoadingSpinnerToDOM = () => {
     const div = document.createElement('div');
     div.innerHTML = loadingSpinnerHTML;
     document.body.appendChild(div);
+    console.log("Колесико загрузки добавлено в DOM.");
 };
 
 // Показать колесико загрузки
@@ -50,6 +51,9 @@ const showLoadingSpinner = () => {
     const spinner = document.getElementById('loading-spinner');
     if (spinner) {
         spinner.style.display = 'block'; // Отображение спиннера
+        console.log("Колесико загрузки отображено.");
+    } else {
+        console.log("Колесико загрузки не найдено в DOM.");
     }
 };
 
@@ -58,6 +62,7 @@ const hideLoadingSpinner = () => {
     const spinner = document.getElementById('loading-spinner');
     if (spinner) {
         spinner.style.display = 'none'; // Скрытие спиннера
+        console.log("Колесико загрузки скрыто.");
     }
 };
 
