@@ -11,7 +11,7 @@ const getSupabaseClient = () => {
 };
 
 // Список защищённых страниц
-const protectedPages = ["/berachain"]; 
+const protectedPages = ["/story", "/ithaca", "/soneium", "/eclipse"]; 
 
 // Скрыть содержимое страницы перед проверкой
 const hidePageContent = () => {
@@ -44,13 +44,13 @@ const checkSubscriptionStatus = async () => {
             .single();
 
         if (error || !subscription || subscription.status !== "Active") {
-            window.location.href = '/subscription'; // Редирект на страницу продления подписки
+            window.location.href = '/pricing'; // Редирект на страницу продления подписки
         } else {
             showPageContent(); // Показать содержимое страницы после успешной проверки
         }
     } catch (error) {
         console.error("Ошибка при проверке подписки:", error);
-        window.location.href = '/error'; // Редирект в случае ошибки
+        window.location.href = '/404'; // Редирект в случае ошибки
     }
 };
 
