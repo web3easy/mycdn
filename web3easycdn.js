@@ -11,7 +11,7 @@ const getSupabaseClient = () => {
 };
 
 // Список защищённых страниц
-const protectedPages = ["/app/projects/testnet/pro/story", "/app/projects/testnet/pro/ithaca", "/app/projects/testnet/pro/soneium", "/app/projects/mainnet/pro/eclipse"]; 
+const protectedPages = ["/app/projects/testnet/pro/story", "/app/projects/testnet/pro/ithaca", "/app/projects/testnet/pro/soneium", "/app/projects/mainnet/pro/eclipse", "/30-10-w3e-v1", "/app/calendar"]; 
 
 // Скрыть содержимое страницы перед проверкой
 const hidePageContent = () => {
@@ -44,7 +44,7 @@ const checkSubscriptionStatus = async () => {
             .single();
 
         if (error || !subscription || subscription.status !== "Active") {
-            window.location.href = '/pricing'; // Редирект на страницу продления подписки
+            window.location.href = '/pro-subscribe'; // Редирект на страницу продления подписки
         } else {
             showPageContent(); // Показать содержимое страницы после успешной проверки
         }
