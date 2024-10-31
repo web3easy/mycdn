@@ -11,7 +11,7 @@ const getSupabaseClient = () => {
 };
 
 // Список защищённых страниц
-const protectedPages = ["/app/projects/testnet/pro/story", "/app/projects/testnet/pro/ithaca", "/app/projects/testnet/pro/soneium", "/app/projects/mainnet/pro/eclipse", "/30-10-w3e-v1", "/app/calendar"]; 
+const protectedPages = ["/app/projects/testnet/pro/story", "/app/projects/testnet/pro/ithaca", "/app/projects/testnet/pro/soneium", "/app/projects/mainnet/pro/eclipse", "/updates", "/app/calendar"]; 
 
 // Скрыть содержимое страницы перед проверкой
 const hidePageContent = () => {
